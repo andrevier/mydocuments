@@ -7,7 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import securityexample.userauthwithdb.entities.Document;
 import securityexample.userauthwithdb.service.DocumentService;
 
 
@@ -20,7 +19,7 @@ public class MainPageController {
     public String homePage(Authentication a, Model model) {
         model.addAttribute("username", a.getName());
         model.addAttribute("documents", documentService.getDocuments());
-        
+
         return "home.html";
     }
 }

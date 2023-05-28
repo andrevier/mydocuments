@@ -24,6 +24,14 @@ public class PresetUsers {
                 new UserData("mateus", bcrypt.encode("1234")));
             documentRepository.save(
                 new Document("My first text.", user1));
+            documentRepository.save(
+                new Document("This is mateus' content.", user1));
+            
+            UserData user2 = userRepository.save(
+                new UserData("john", bcrypt.encode("1234")));
+            documentRepository.save(
+                new Document("This is john's content.", user2));
+            
         };
     }
 }

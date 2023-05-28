@@ -33,6 +33,9 @@ public class Document {
     @JoinColumn(name = "user_id", nullable = false)
     private UserData user;
 
+    public Document() {
+    }
+
     public Document(String content, UserData user) {
         this.content = content;
         this.user = user;

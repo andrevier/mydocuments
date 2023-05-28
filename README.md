@@ -1,24 +1,26 @@
 ## User authentication with database.
-This example applies user authentication for pre-registered users in the database.
+This example applies user authentication for pre-registered users in the database. Each user has documents which can be seen in the moment they are authenticated.
 
-Configure two entities in the database: users and privileges. Those entities are in the folder entities and they have a one-to-many relationship such that:
-- A user has 0 or more privileges;
-- The same privilege can belong to multiple users.
+## To-do list.
+[1] Custom login page.
+[2] Register page.
+[3] Create,update, and delete documents.
 
-The Controller.java in the folder controller is a restcontroller and expose a single endpoint called home.
+### Comments.
+There are three main entities in this application: user, privilege, and document. Those entities are in the folder entities. The rules for their relationships are:
+[1] A user has 0 or more privileges;
+[2] Each privilege belongs to one user;
+[3] A user has 0 or many documents;
 
-<!-- explain what the configuration means -->
+By rules 1 and 2, the user and privilege have one-to-many relationship, as well and the user and documets.
+
+The Controller.java in the folder controller expose a single endpoint called home.
+
+<!-- explain what the configuration means 
 Configure the database connections in resources/application.yaml.
 Configure the services in the containers in ./compose.yaml
+-->
 
-Check the database in the commandline: 
-docker compose up
-if the last message is :
-LOG:  database system is ready to accept connections
-
-The configurations are correct.
-
-#
 
 
 
