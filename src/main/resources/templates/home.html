@@ -22,8 +22,8 @@
             <tr th:if="${documents.empty}">
                 <td colspan="2">No documents available.</td>
             </tr>
-            <tr th:each="document : ${documents}">
-                <td><span th:text="${document.documentId}">Id</span></td>
+            <tr th:each="document, status : ${documents}">
+                <td><span th:text="${status.index + 1}">#</span></td>
                 <td><span th:text="${document.content}">Content</span></td>                
             </tr>
         </tbody>

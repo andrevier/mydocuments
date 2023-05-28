@@ -19,7 +19,6 @@ public class MainPageController {
     public String homePage(Authentication a, Model model) {
         model.addAttribute("username", a.getName());
         model.addAttribute("documents", documentService.getDocuments());
-
         return "home.html";
     }
 }

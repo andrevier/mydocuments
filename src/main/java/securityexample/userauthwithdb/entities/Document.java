@@ -9,6 +9,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import securityexample.userauthwithdb.config.PrivilegeName;
 
 @Entity
 @Table(name = "document")
@@ -45,10 +46,6 @@ public class Document {
         return documentId;
     }
 
-    public void setDocumentId(Long documentId) {
-        this.documentId = documentId;
-    }
-
     public String getContent() {
         return content;
     }
@@ -56,5 +53,4 @@ public class Document {
     public void setContent(String content) {
         this.content = content;
     }
-    
 }
