@@ -20,10 +20,12 @@ public class ProjectConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-        .authorizeHttpRequests((authz) ->
-            authz.anyRequest().authenticated())
+        .authorizeHttpRequests((authz) ->{
+           // authz.requestMatchers(HttpMethod.GET, "/css/**").permitAll();//("/css/**").permitAll();
+           //authz.requestMatchers("/signin").permitAll();
+           authz.anyRequest().authenticated();})
         .formLogin(form -> {
-            //form.loginPage("/login").permitAll();
+            form.loginPage("/login").permitAll();
             form.defaultSuccessUrl("/home", true);})
         .logout((logout) -> logout.permitAll())
         .httpBasic(Customizer.withDefaults());
