@@ -45,6 +45,11 @@ public class PresetUsers {
             
             privilegeRepository.save(
                 new Privilege(PrivilegeName.setName(doc3.getDocumentId()), user2));
+            
+            // Giving access to the content from user 2 to the user 1.
+            privilegeRepository.save(
+                new Privilege(PrivilegeName.setName(doc3.getDocumentId()), user1));
+            
         };
     }
 }

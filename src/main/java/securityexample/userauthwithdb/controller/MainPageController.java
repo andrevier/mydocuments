@@ -16,9 +16,9 @@ public class MainPageController {
     private DocumentService documentService;
 
     @GetMapping("/home")
-    public String homePage(Authentication a, Model model) {
+    public void homePage(Authentication a, Model model) {
         model.addAttribute("username", a.getName());
         model.addAttribute("documents", documentService.getDocuments());
-        return "home.html";
+        //return "home.html";
     }
 }

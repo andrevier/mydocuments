@@ -16,15 +16,17 @@
             <tr>
                 <th>#</th>
                 <th>Content</th>
+                <th>Owner</th>
             </tr>
         </thead>
         <tbody>
             <tr th:if="${documents.empty}">
-                <td colspan="2">No documents available.</td>
+                <td colspan="3">No documents available.</td>
             </tr>
             <tr th:each="document, status : ${documents}">
-                <td><span th:text="${status.index + 1}">#</span></td>
-                <td><span th:text="${document.content}">Content</span></td>                
+                <td><span th:text="${status.index + 1}"></span></td>
+                <td><span th:text="${document.getContent()}"></span></td>
+                <td><span th:text="${document.getUsername()}"></span></td>
             </tr>
         </tbody>
     </table>    

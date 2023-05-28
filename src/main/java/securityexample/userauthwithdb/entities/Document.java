@@ -9,7 +9,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import securityexample.userauthwithdb.config.PrivilegeName;
 
 @Entity
 @Table(name = "document")
@@ -52,5 +51,9 @@ public class Document {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getUsername() {
+        return this.user.getUsername();
     }
 }
