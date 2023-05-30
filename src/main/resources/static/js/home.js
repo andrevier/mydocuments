@@ -1,3 +1,0 @@
-function sendContent(documentId) {
-    
-}
