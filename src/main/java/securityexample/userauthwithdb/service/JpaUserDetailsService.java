@@ -8,8 +8,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import securityexample.userauthwithdb.config.CustomUserDetails;
 import securityexample.userauthwithdb.entities.UserData;
-import securityexample.userauthwithdb.model.CustomUserDetails;
 import securityexample.userauthwithdb.repositories.UserRepository;
 
 @Service

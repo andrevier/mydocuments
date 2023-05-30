@@ -24,8 +24,6 @@
         <li><a class="dropdown-item text-secondary" href="#">Logout</a></li>
       </ul>
     </div>
-    
-    <!-- <span class="navbar-text mx-4"><a href="#" th:text="${username}"></a></span> -->
   </nav>
 
   <div class="container">
@@ -45,7 +43,7 @@
             </tr>
             <tr th:each="document, status : ${documents}">
                 <td><span th:text="${status.index + 1}"></span></td>
-                <td><span th:text="${document.getContent()}"></span></td>
+                <td><a th:href="@{/edit/{documentId}(documentId = ${document.documentId})}" th:text="${document.getTitle()}"></a></td>
                 <td><span th:text="${document.getUsername()}"></span></td>
             </tr>
         </tbody>
@@ -54,6 +52,7 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script type="text/javascript" th:scr="@{/js/home.js}"></script>
 </body>
 
 </html>

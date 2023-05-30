@@ -27,8 +27,10 @@ public class Document {
     private Long documentId;
 
     @Column(nullable = false)
-    private String content;
+    private String title;
 
+    private String content;
+    
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private UserData user;
@@ -36,9 +38,10 @@ public class Document {
     public Document() {
     }
 
-    public Document(String content, UserData user) {
-        this.content = content;
+    public Document(String title, UserData user) {
+        this.title = title;
         this.user = user;
+        this.content = "";
     }
 
     public Long getDocumentId() {
@@ -55,5 +58,25 @@ public class Document {
 
     public String getUsername() {
         return this.user.getUsername();
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public UserData getUser() {
+        return user;
+    }
+
+    public void setDocumentId(Long documentId) {
+        this.documentId = documentId;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setUser(UserData user) {
+        this.user = user;
     }
 }

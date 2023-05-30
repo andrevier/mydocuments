@@ -1,4 +1,4 @@
-package securityexample.userauthwithdb.model;
+package securityexample.userauthwithdb.config;
 
 import java.util.Collection;
 import java.util.stream.Collectors;

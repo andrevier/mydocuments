@@ -1,0 +1,3 @@
+function sendContent(documentId) {
+    
+}

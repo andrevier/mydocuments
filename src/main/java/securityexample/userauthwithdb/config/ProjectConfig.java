@@ -2,6 +2,7 @@ package securityexample.userauthwithdb.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -21,8 +22,8 @@ public class ProjectConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
         .authorizeHttpRequests((authz) ->{
-           // authz.requestMatchers(HttpMethod.GET, "/css/**").permitAll();//("/css/**").permitAll();
-           //authz.requestMatchers("/signin").permitAll();
+           authz.requestMatchers("/edit").permitAll();
+           authz.requestMatchers("/update-document").permitAll();
            authz.anyRequest().authenticated();})
         .formLogin(form -> {
             form.loginPage("/login").permitAll();
