@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.naming.NameNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.security.core.Authentication;
@@ -55,16 +57,18 @@ public class DocumentService {
         return this.documentRepository.findByIdReturnDto(documentId);
     }
 
-    public HttpStatusCode updateDocument(DocumentRequest doc) {
-        Document updateDocument = this.documentRepository
-            .findById(doc.getDocumentId()).get();
+    public void updateDocument(DocumentRequest doc) {
+        Optional<Document> updateDocument = Optional.ofNullable(
+            this.documentRepository.findById(doc.getDocumentId()))
+            .orElseThrow(() -> new UsernameNotFoundException(
+                "Document id cannot be found. Object returned null"));
         
-        updateDocument.setTitle(doc.getTitle());
-        updateDocument.setContent(doc.getContent());
+        updateDocument.get().setTitle(doc.getTitle());
         
-        documentRepository.save(updateDocument);
+        updateDocument.get().setContent(doc.getContent());
+        
+        this.documentRepository.save(updateDocument.get());
 
-        return HttpStatusCode.valueOf(200);
     }
 
     public void createDocument(String username, Authentication auth) {
