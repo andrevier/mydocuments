@@ -2,11 +2,14 @@ package securityexample.userauthwithdb.service;
 
 import org.springframework.stereotype.Service;
 
+import securityexample.userauthwithdb.config.PrivilegeName;
 import securityexample.userauthwithdb.dto.DocumentDto;
 import securityexample.userauthwithdb.dto.DocumentRequest;
 import securityexample.userauthwithdb.entities.Document;
+import securityexample.userauthwithdb.entities.Privilege;
 import securityexample.userauthwithdb.entities.UserData;
 import securityexample.userauthwithdb.repositories.DocumentRepository;
+import securityexample.userauthwithdb.repositories.PrivilegeRepository;
 import securityexample.userauthwithdb.repositories.UserRepository;
 
 import java.util.ArrayList;
@@ -19,6 +22,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 @Service
 public class DocumentService {
@@ -26,25 +30,18 @@ public class DocumentService {
     private DocumentRepository documentRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private PrivilegeRepository privilegeRepository;
     
     public List<DocumentDto> getDocuments() {
         // Find the principal user.
         SecurityContext context = SecurityContextHolder.getContext();
         Authentication a = context.getAuthentication();
         
-        // Get the user object.
-        Optional<UserData> user = userRepository
-            .findUserDataByUsername(a.getName());
-        if (user.isEmpty())  {
-            return new ArrayList<DocumentDto>();
-        }
-
         // Find all documents that the user has access but is from others.
         List<Long> docIds = a.getAuthorities().stream().map(auth -> 
             Long.parseLong(auth.getAuthority().split(":")[1]))
             .collect(Collectors.toList());
-        
-        List<Document> docs = documentRepository.findAllById(docIds);
         
         List<DocumentDto> docDtos = new ArrayList<>();
 
@@ -59,9 +56,6 @@ public class DocumentService {
     }
 
     public HttpStatusCode updateDocument(DocumentRequest doc) {
-        // UserData user = this.userRepository
-        //     .findUserDataByUsername(auth.getName()).get();
-        
         Document updateDocument = this.documentRepository
             .findById(doc.getDocumentId()).get();
         
@@ -72,4 +66,23 @@ public class DocumentService {
 
         return HttpStatusCode.valueOf(200);
     }
+
+    public void createDocument(String username, Authentication auth) {
+        // Create a document for the user in username.
+        Optional<UserData> user = Optional.ofNullable(
+            this.userRepository.findUserDataByUsername(username))
+            .orElseThrow(() -> new UsernameNotFoundException(username, null));
+        
+        Document newDoc = this.documentRepository.save(
+            new Document("new note", user.get()));
+
+        Privilege newPrivilege = this.privilegeRepository.save(
+            new Privilege(
+                PrivilegeName.setName(newDoc.getDocumentId()), user.get()));
+
+        // After the creation of the document, the user's authorities must be
+        // updated.
+        JpaUserDetailsService.updatedAuthorities(auth, newPrivilege);
+    }
+
 }

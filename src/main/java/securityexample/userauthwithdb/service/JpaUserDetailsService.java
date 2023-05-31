@@ -1,14 +1,22 @@
 package securityexample.userauthwithdb.service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Supplier;
 
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import securityexample.userauthwithdb.config.CustomUserDetails;
+import securityexample.userauthwithdb.entities.Privilege;
 import securityexample.userauthwithdb.entities.UserData;
 import securityexample.userauthwithdb.repositories.UserRepository;
 
@@ -33,6 +41,24 @@ public class JpaUserDetailsService implements UserDetailsService{
         
         return new CustomUserDetails(u);
         
+    }
+
+    public static void updatedAuthorities(
+            Authentication auth, Privilege privilege) {
+        // Add the new authority in the privilege object to the authorities
+        // of the security context.
+        List<GrantedAuthority> updatedAuthorities = new ArrayList<>(
+            auth.getAuthorities());
+        
+        updatedAuthorities.add(
+            new SimpleGrantedAuthority(privilege.getPrivilegeName()));
+
+        Authentication newAuth = new UsernamePasswordAuthenticationToken(
+            auth.getPrincipal(),
+            auth.getCredentials(),
+            updatedAuthorities);
+        
+        SecurityContextHolder.getContext().setAuthentication(newAuth);
     }
     
 }

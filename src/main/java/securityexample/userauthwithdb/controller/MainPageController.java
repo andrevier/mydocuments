@@ -20,16 +20,11 @@ public class MainPageController {
     @Autowired
     private DocumentService documentService;
 
-    @GetMapping("/home")
-    public void homePage(Authentication a, Model model) {
+    @GetMapping({"/home", "/"})
+    public String homePage(Authentication a, Model model) {
         model.addAttribute("username", a.getName());
         model.addAttribute("documents", documentService.getDocuments());
-    }
-
-    @GetMapping("/edit")
-    public String editDocument(Authentication a, Model model) {
-        model.addAttribute("username", a.getName());
-        return "edit";
+        return "home";
     }
 
     @GetMapping("/edit/{documentId}")
@@ -42,11 +37,10 @@ public class MainPageController {
         DocumentDto docDto = this.documentService.getDocumentById(documentId);
         model.addAttribute("document", docDto);
         model.addAttribute("username", a.getName());
-
         return "edit";
     }
 
-    @PostMapping("/update-document/{documentId}")
+    @PostMapping("/edit/{documentId}")
     public String updateDocument(
         Authentication auth, 
         Model model, 
@@ -56,8 +50,15 @@ public class MainPageController {
         document.setDocumentId(documentId);
         this.documentService.updateDocument(document);
 
-        model.addAttribute("username", auth.getName());
-        model.addAttribute("documents", documentService.getDocuments());
-        return "home";
+        // model.addAttribute("username", auth.getName());
+        // model.addAttribute("documents", documentService.getDocuments());
+        return "redirect:/home";
+    }
+
+    @GetMapping("/create-document")
+    public String createDocument(Authentication auth, Model model) {
+        // Create an empty document for the user.
+        this.documentService.createDocument(auth.getName(), auth);
+        return "redirect:/home";
     }
 }
