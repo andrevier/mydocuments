@@ -36,8 +36,7 @@ Based on these rules, the user and privilege have a one-to-many relationship, as
 To showcase the functionality and features of this application, the following tasks are planned:
 
 1. **Register Page**: Implement a registration page where new users can sign up for an account.
-2. **Create and Delete Documents**: Enable users to create new documents and delete unwanted ones.
-3. **Test Security**: Thoroughly test the security implementation to ensure the protection of user data.
-4. **User Access Management**: Implement a feature where users can grant access to their documents to other users.
+2. **Upgrade Security**: Thoroughly test the security implementation to ensure the protection of user data.
+3. **User Access Management**: Implement a feature where users can grant access to their documents to other users.
 
 Feel free to explore this repository. If you have any questions or feedback, please don't hesitate to reach out.
