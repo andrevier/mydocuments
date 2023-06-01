@@ -38,12 +38,18 @@
           </tr>
           <tr th:each="document, status : ${documents}">
             <td><span th:text="${status.index + 1}"></span></td>
+            
             <td><a th:href="@{/edit/{documentId}(documentId = ${document.documentId})}"
                 th:text="${document.getTitle()}"></a></td>
             <td><span th:text="${document.getUsername()}"></span></td>
+
+            <td><form th:action="@{/delete/{documentId}(documentId = ${document.documentId})}" method="post">
+              <button type="submit" class="btn btn-warning">delete</button>
+            </form></td>
           </tr>
         </tbody>
       </table>
+
       <form th:action="@{/create-document}" method="get">
         <button type="submit" class="btn btn-primary" id="add-button">add</button>
       </form>

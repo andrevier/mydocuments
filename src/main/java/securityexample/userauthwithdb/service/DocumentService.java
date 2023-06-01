@@ -86,7 +86,23 @@ public class DocumentService {
 
         // After the creation of the document, the user's authorities must be
         // updated.
-        JpaUserDetailsService.updatedAuthorities(auth, newPrivilege);
+        JpaUserDetailsService.addAuthority(auth, newPrivilege);
+    }
+
+    public void deleteDocument(Authentication auth, Long documentId) {
+        // Delete the document in the repository by its id.
+        this.documentRepository.deleteById(documentId);
+
+        // Then, delete all privileges for the document.
+        List<Privilege> privileges = this.privilegeRepository
+            .findAllWithName(PrivilegeName.setName(documentId));       
+
+        for (Privilege privilege: privileges) {
+            this.privilegeRepository.deleteById(privilege.getPrivilegeId());
+            
+            // Update the user's authorities in the security context.
+            JpaUserDetailsService.deleteAuthority(auth, privilege);
+        }        
     }
 
 }

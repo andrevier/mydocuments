@@ -67,9 +67,6 @@ public class MainPageController {
         logger.info("content : " + updatedDocument.getContent());
         
         this.documentService.updateDocument(updatedDocument);
-
-        // model.addAttribute("username", auth.getName());
-        // model.addAttribute("documents", documentService.getDocuments());
         return "redirect:/home";
     }
 
@@ -82,6 +79,15 @@ public class MainPageController {
     public String createDocument(Authentication auth, Model model) {
         // Create an empty document for the user.
         this.documentService.createDocument(auth.getName(), auth);
+        return "redirect:/home";
+    }
+
+    @PostMapping("/delete/{documentId}")
+    public String deleteDocument(
+        Authentication auth, 
+        @PathVariable Long documentId) {
+        // Delete the document with the Id documentId.
+        this.documentService.deleteDocument(auth, documentId);
         return "redirect:/home";
     }
 }

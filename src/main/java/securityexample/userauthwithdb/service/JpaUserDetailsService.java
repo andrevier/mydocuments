@@ -2,7 +2,10 @@ package securityexample.userauthwithdb.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +46,7 @@ public class JpaUserDetailsService implements UserDetailsService{
         
     }
 
-    public static void updatedAuthorities(
+    public static void addAuthority(
             Authentication auth, Privilege privilege) {
         // Add the new authority in the privilege object to the authorities
         // of the security context.
@@ -60,5 +63,31 @@ public class JpaUserDetailsService implements UserDetailsService{
         
         SecurityContextHolder.getContext().setAuthentication(newAuth);
     }
+
+    public static void deleteAuthority(
+        Authentication auth, Privilege privilege) {
+        // Get the list of authorities from the security context.
+        List<GrantedAuthority> currentAuthorities = new ArrayList<>(
+            auth.getAuthorities());
+        
+        // Filter the list with privileges not equal to the privilege 
+        // to be deleted.
+        Predicate<GrantedAuthority> isNotEqual = authority -> !authority
+            .getAuthority().equals(privilege.getPrivilegeName());
+        
+        List<GrantedAuthority> filteredAuthorities =  currentAuthorities
+            .stream()
+            .filter(isNotEqual)
+            .collect(Collectors.toList());
+
+        // Update the security context.
+        Authentication newAuth = new UsernamePasswordAuthenticationToken(
+            auth.getPrincipal(),
+            auth.getCredentials(),
+            filteredAuthorities);
+        
+        SecurityContextHolder.getContext().setAuthentication(newAuth);
+    }
+    
     
 }

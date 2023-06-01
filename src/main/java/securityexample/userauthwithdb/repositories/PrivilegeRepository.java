@@ -11,4 +11,8 @@ public interface PrivilegeRepository extends JpaRepository<Privilege, Long>{
     @Query(value = "SELECT * FROM privileges p WHERE p.user_id = :userId",
     nativeQuery = true)
     List<Privilege> findPrivilegesByUserId(Long userId);
+
+    @Query(value = "SELECT * FROM privileges p"
+    + " WHERE p.privilege_name = :privilegeName", nativeQuery = true)
+    List<Privilege> findAllWithName(String privilegeName);
 }
